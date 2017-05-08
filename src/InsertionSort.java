@@ -10,7 +10,7 @@ public class InsertionSort {
         boolean multithreaded = false;
 
         // Creating arrays
-        int array[] = new int[700000];
+        int array[] = new int[70000];
         populateArray(array);
 
         // Before
