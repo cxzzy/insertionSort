@@ -5,49 +5,78 @@ import java.util.Arrays;
 
 public class InsertionSort {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+
+        boolean multithreaded = false;
 
         // Creating arrays
-        int array[] = new int[100];
-        splitArray splitArray = new splitArray();
-
+        int array[] = new int[700000];
         populateArray(array);
-        splitArray.splitArray(array);
 
-        // Printing a
-        System.out.print("a : "+ splitArray.getArray(1).length);
-        for (int i = 0; i < splitArray.getArray(1).length; i++) {
-            System.out.print("\t" + splitArray.getArray(1)[i]);
-        }
-        System.out.println();
-
-        //
+        // Before
         System.out.println("Before Sorting: ");
         System.out.println(Arrays.toString(array));
 
-        // sort the array
-        Thread sortFirstHalf = new Thread() {
-            public void run() {
-                insertionSort(splitArray.getArray(1));
+        splitArray splitArray = new splitArray();
+        splitArray.splitArray(array);
+
+        int[] firstHalf = splitArray.getArray(1);
+        int[] secondHalf = splitArray.getArray(2);
+
+        showHalf(firstHalf);
+        showHalf(secondHalf);
+
+        if(multithreaded) {
+            // sort the array
+            Thread sortFirstHalf = new Thread() {
+                public void run() {
+                    insertionSort(firstHalf);
+                }
+            };
+
+            // sort the array
+            Thread sortSecondHalf = new Thread() {
+                public void run() {
+                    insertionSort(secondHalf);
+                }
+            };
+
+            sortFirstHalf.start();
+            sortSecondHalf.start();
+
+            sortFirstHalf.join();
+            sortSecondHalf.join();
+
+            int mergedArray[] = new int[firstHalf.length + secondHalf.length];
+
+            // Merge sorted arrays back together
+            if(!sortFirstHalf.isAlive() && !sortSecondHalf.isAlive()) {
+
+                System.arraycopy(firstHalf,0, mergedArray, 0, firstHalf.length);
+                System.arraycopy(secondHalf,0, mergedArray, firstHalf.length, secondHalf.length);
+
+                System.out.println("Merged array: "+ Arrays.toString(mergedArray) );
             }
-        };
 
-        // sort the array
-        Thread sortSeoondHalf = new Thread() {
-            public void run() {
-                insertionSort(splitArray.getArray(2));
-                System.out.println("Sorted second half: "+ Arrays.toString(array));
-            }
-        };
+            insertionSort(mergedArray);
 
-        sortFirstHalf.start();
-        sortSeoondHalf.start();
+            System.out.println("\nAfter Sorting: ");
+            System.out.println(Arrays.toString(mergedArray));
+        } else {
+            // Normal way
+            insertionSort(array);
+            System.out.println("\nAfter Sorting: ");
+            System.out.println(Arrays.toString(array));
+        }
+    }
 
-        // Normal way
-        //insertionSort(array);
-
-        System.out.println("\nAfter Sorting: ");
-        System.out.println(Arrays.toString(array));
+    private static void showHalf(int[] half) {
+        // Printing a
+        System.out.print("First half : "+ half.length);
+        for (int i = 0; i < half.length; i++) {
+            System.out.print("\t" + half[i]);
+        }
+        System.out.println();
     }
 
     private static void insertionSort(int[] arr) {
