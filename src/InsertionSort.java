@@ -23,7 +23,7 @@ public class InsertionSort {
         long stopTime = System.currentTimeMillis();
         long elapsedTime1thread = stopTime - startTime;
 
-        System.out.println("\nTime sorting array with 1 Thread: " + elapsedTime1thread + " ms");
+        System.out.println("Time sorting array with 1 Thread: " + elapsedTime1thread + " ms");
 
 //        System.out.println("Sorted array: " + Arrays.toString(sortedArray));
 
