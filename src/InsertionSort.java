@@ -7,7 +7,7 @@ public class InsertionSort {
 
     public static void main(String[] args) throws InterruptedException {
 
-        boolean multithreaded = false;
+        boolean multithreaded = true;
 
         // Creating arrays
         int array[] = new int[70000];
@@ -17,6 +17,7 @@ public class InsertionSort {
         System.out.println("Before Sorting: ");
         System.out.println(Arrays.toString(array));
 
+        // Split array
         splitArray splitArray = new splitArray();
         splitArray.splitArray(array);
 
@@ -34,6 +35,8 @@ public class InsertionSort {
                 }
             };
 
+            sortFirstHalf.start();
+
             // sort the array
             Thread sortSecondHalf = new Thread() {
                 public void run() {
@@ -41,7 +44,6 @@ public class InsertionSort {
                 }
             };
 
-            sortFirstHalf.start();
             sortSecondHalf.start();
 
             sortFirstHalf.join();
