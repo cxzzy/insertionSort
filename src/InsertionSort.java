@@ -16,6 +16,7 @@ public class InsertionSort {
 //        System.out.println("Current array: \n" + Arrays.toString(array));
 
         long startTime = System.currentTimeMillis();
+        // Split array
 
         int[] sortedArray = insertionSort(array);
 
@@ -49,6 +50,7 @@ public class InsertionSort {
         sortSecondHalf.join();
 
         int[] mergedArray = merge(first, second);
+        insertionSort(mergedArray);
 
         long stopTime2Threads = System.currentTimeMillis();
         long elapsedTime2Threads = stopTime2Threads - startTime2Threads;
