@@ -52,10 +52,51 @@ public class InsertionSort {
         int[] mergedArray = merge(first, second);
         insertionSort(mergedArray);
 
+        insertionSort(mergedArray);
+
         long stopTime2Threads = System.currentTimeMillis();
         long elapsedTime2Threads = stopTime2Threads - startTime2Threads;
 
         System.out.println("Time sorting array with 2 Threads: " + elapsedTime2Threads + " ms");
+
+        System.out.println("\n 4 Threads: \n");
+
+        int fourThreadsArray[] = new int[160000];
+        populateArray(fourThreadsArray);
+
+        long startTime4Threads = System.currentTimeMillis();
+
+        int[] firstQuarter = copyOfRange(fourThreadsArray, 0, fourThreadsArray.length / 4);
+        int[] secondQuarter = copyOfRange(fourThreadsArray, firstQuarter.length, firstQuarter.length + fourThreadsArray.length / 4);
+        int[] thirdQuarter = copyOfRange(fourThreadsArray, secondQuarter.length, secondQuarter.length + fourThreadsArray.length / 4);
+        int[] fourthQuarter = copyOfRange(fourThreadsArray, thirdQuarter.length, thirdQuarter.length + fourThreadsArray.length / 4);
+
+        // sorting the arrays
+        Thread sortFirstquarter = new Thread(() -> insertionSort(firstQuarter));
+        Thread sortSecondquarter = new Thread(() -> insertionSort(secondQuarter));
+        Thread sortThirdquarter = new Thread(() -> insertionSort(thirdQuarter));
+        Thread sortFourthquarter = new Thread(() -> insertionSort(fourthQuarter));
+
+        sortFirstquarter.start();
+        sortSecondquarter.start();
+        sortThirdquarter.start();
+        sortFourthquarter.start();
+
+        sortFirstquarter.join();
+        sortSecondquarter.join();
+        sortThirdquarter.join();
+        sortFourthquarter.join();
+
+        int[] mergedArrayOne = merge(firstQuarter, secondQuarter);
+        int[] mergedArrayTwo = merge(thirdQuarter, fourthQuarter);
+        int[] mergedArrayThree = merge(mergedArrayOne, mergedArrayTwo);
+
+        insertionSort(mergedArrayThree);
+
+        long stopTime4Threads = System.currentTimeMillis();
+        long elapsedTime4Threads = stopTime4Threads - startTime4Threads;
+
+        System.out.println("Time sorting array with 4 Threads: " + elapsedTime4Threads + " ms");
     }
 
     private static int[] insertionSort(int[] arr) {
