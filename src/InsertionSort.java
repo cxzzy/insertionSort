@@ -1,102 +1,52 @@
-import static java.util.Arrays.copyOfRange;
-
 public class InsertionSort {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ////Start insertionSort with 1 thread
+        //TODO: Add the EventProfiler from ParallelMin example
 
+        ////Start insertionSort with 1 thread
         System.out.println("1 Thread: \n");
 
-        //Start with 160.000 integers
-        int array[] = new int[160000];
-        populateArray(array);
+        //Start with 100.000.000 integers
+        int array[] = Utils.fillArray(100000);
+        Utils.shuffleArray(array);
 
-        // Before spliting the array
-//        System.out.println("Current array: \n" + Arrays.toString(array));
+        Thread serialThread = new Thread(() -> insertionSort(array));
 
         long startTime = System.currentTimeMillis();
-        // Split array
 
-        int[] sortedArray = insertionSort(array);
+        serialThread.start();
+
+        serialThread.join();
 
         long stopTime = System.currentTimeMillis();
         long elapsedTime1thread = stopTime - startTime;
 
         System.out.println("Time sorting array with 1 Thread: " + elapsedTime1thread + " ms");
 
-//        System.out.println("Sorted array: " + Arrays.toString(sortedArray));
+        System.out.println("2 Threads: \n");
 
-        ////Start insertionSort with 2 threads
+        Utils.shuffleArray(array);
 
-        System.out.println("\n 2 Threads: \n");
+        Thread parallelThread = new Thread(() -> {
+            try {
+                insertionSort2Threaded(array);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 
-        int twoThreadsArray[] = new int[160000];
-        populateArray(twoThreadsArray);
+        long startTime1 = System.currentTimeMillis();
 
-        long startTime2Threads = System.currentTimeMillis();
+        parallelThread.start();
 
-        int[] first = copyOfRange(twoThreadsArray, 0, twoThreadsArray.length / 2);
-        int[] second = copyOfRange(twoThreadsArray, first.length, twoThreadsArray.length);
+        parallelThread.join();
 
-        // sorting the arrays
-        Thread sortFirstHalf = new Thread(() -> insertionSort(first));
-        Thread sortSecondHalf = new Thread(() -> insertionSort(second));
+        long stopTime1 = System.currentTimeMillis();
+        long elapsedTime2thread = stopTime1 - startTime1;
 
-        sortFirstHalf.start();
-        sortSecondHalf.start();
+        System.out.println("Time sorting array with 2 Thread: " + elapsedTime2thread + " ms");
 
-        sortFirstHalf.join();
-        sortSecondHalf.join();
-
-        int[] mergedArray = merge(first, second);
-        insertionSort(mergedArray);
-
-        insertionSort(mergedArray);
-
-        long stopTime2Threads = System.currentTimeMillis();
-        long elapsedTime2Threads = stopTime2Threads - startTime2Threads;
-
-        System.out.println("Time sorting array with 2 Threads: " + elapsedTime2Threads + " ms");
-
-        System.out.println("\n 4 Threads: \n");
-
-        int fourThreadsArray[] = new int[160000];
-        populateArray(fourThreadsArray);
-
-        long startTime4Threads = System.currentTimeMillis();
-
-        int[] firstQuarter = copyOfRange(fourThreadsArray, 0, fourThreadsArray.length / 4);
-        int[] secondQuarter = copyOfRange(fourThreadsArray, firstQuarter.length, firstQuarter.length + fourThreadsArray.length / 4);
-        int[] thirdQuarter = copyOfRange(fourThreadsArray, secondQuarter.length, secondQuarter.length + fourThreadsArray.length / 4);
-        int[] fourthQuarter = copyOfRange(fourThreadsArray, thirdQuarter.length, thirdQuarter.length + fourThreadsArray.length / 4);
-
-        // sorting the arrays
-        Thread sortFirstquarter = new Thread(() -> insertionSort(firstQuarter));
-        Thread sortSecondquarter = new Thread(() -> insertionSort(secondQuarter));
-        Thread sortThirdquarter = new Thread(() -> insertionSort(thirdQuarter));
-        Thread sortFourthquarter = new Thread(() -> insertionSort(fourthQuarter));
-
-        sortFirstquarter.start();
-        sortSecondquarter.start();
-        sortThirdquarter.start();
-        sortFourthquarter.start();
-
-        sortFirstquarter.join();
-        sortSecondquarter.join();
-        sortThirdquarter.join();
-        sortFourthquarter.join();
-
-        int[] mergedArrayOne = merge(firstQuarter, secondQuarter);
-        int[] mergedArrayTwo = merge(thirdQuarter, fourthQuarter);
-        int[] mergedArrayThree = merge(mergedArrayOne, mergedArrayTwo);
-
-        insertionSort(mergedArrayThree);
-
-        long stopTime4Threads = System.currentTimeMillis();
-        long elapsedTime4Threads = stopTime4Threads - startTime4Threads;
-
-        System.out.println("Time sorting array with 4 Threads: " + elapsedTime4Threads + " ms");
     }
 
     private static int[] insertionSort(int[] arr) {
@@ -115,20 +65,49 @@ public class InsertionSort {
         return arr;
     }
 
-    private static void populateArray(int[] B) {
-        for (int i = 0; i < B.length; i++) {
-            B[i] = (int) (Math.random() * 10000);
-        }
-    }
+    private static int[] insertionSort2Threaded(int[] arr) throws InterruptedException {
 
-    private static int[] merge(int[] a, int[] b) {
-        int[] c = new int[a.length + b.length];
-        int i;
-        for (i = 0; i < a.length; i++)
-            c[i] = a[i];
+        Thread t1 = new Thread(() -> {
 
-        for (int j = 0; j < b.length; j++)
-            c[i++] = b[j];
-        return c;
+            int j;
+            int key;
+            int i;
+
+            for (j = 1; j < arr.length; j++) {
+                key = arr[j];
+
+                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
+                    arr[i + 1] = arr[i];
+                }
+
+                arr[i + 1] = key;
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+
+            int k;
+            int key2;
+            int l;
+
+            for (k = arr.length - 1; k > 0; k--) {
+                key2 = arr[k];
+
+                for (l = k - 1; (l < 0) && (arr[l] >= key2); l++) {
+                    arr[l + 1] = arr[l];
+                }
+
+                arr[l + 1] = key2;
+            }
+
+        });
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        return arr;
     }
 }
