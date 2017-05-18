@@ -1,1 +1,1 @@
-# InsertionSort with single and multiple threads
+# Main with single and multiple threads
