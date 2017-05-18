@@ -12,6 +12,7 @@ public class Main {
 
         Thread serialThread = new Thread(() -> sort.singleThread(array));
 
+        //Start timer
         profiler.start();
 
         serialThread.start();
@@ -26,6 +27,7 @@ public class Main {
 
         Thread parallelThread = new Thread(() -> sort.insertionSort2Threaded(array));
 
+        //Start timer
         profiler.start();
 
         parallelThread.start();

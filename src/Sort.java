@@ -1,6 +1,6 @@
-public class Sort {
+class Sort {
 
-    public int[] singleThread(int[] arr) {
+    int[] singleThread(int[] arr) {
         int j;
         int key;
         int i;
@@ -16,7 +16,9 @@ public class Sort {
         return arr;
     }
 
-    public int[] insertionSort2Threaded(int[] arr) {
+
+    //Add synchronized to make sure that the array will be sorted nicely
+    int[] insertionSort2Threaded(int[] arr) {
 
         Thread t1 = new Thread(() -> {
 
@@ -50,7 +52,6 @@ public class Sort {
 
                 arr[l + 1] = key2;
             }
-
         });
 
         t1.start();
@@ -65,5 +66,4 @@ public class Sort {
 
         return arr;
     }
-
 }

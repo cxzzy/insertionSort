@@ -20,8 +20,6 @@ public class EventProfiler {
         return previousTimeStamp;
     }
 
-    ;
-
     public long log(String label) {
         long thisTimeStamp = System.nanoTime();
         long duration = thisTimeStamp - previousTimeStamp;
