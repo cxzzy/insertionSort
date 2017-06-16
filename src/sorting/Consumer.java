@@ -10,16 +10,20 @@ public class Consumer implements Runnable {
         this.array = array;
     }
 
+
+
     @Override
     public void run() {
 
 //        while (true) {
 
+        sorting.sortArray = new int[array.length];
+
             for (j = 1; j < array.length; j++) {
 
                 int i = array[j];
 
-                sorting.sortArray.add(i);
+                sorting.sortArray[i] = i;
             }
 //        }
 

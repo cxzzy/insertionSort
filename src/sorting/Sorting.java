@@ -1,13 +1,10 @@
 package sorting;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Sorting {
 
-    public List sortArray = new ArrayList();
+    public int[] sortArray;
 
-    public List getSortArray() {
+    public int[] getSortArray() {
         return sortArray;
     }
 }

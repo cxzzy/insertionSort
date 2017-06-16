@@ -59,13 +59,11 @@ public class Main {
 
         executorService.submit(consumer);
 
-
-
         executorService.shutdown();
 
-        System.out.println(sorting.getSortArray());
+        System.out.println(sorting.sortArray);
 
-        Utils.printArrayList(sorting.getSortArray());
+        Utils.printArray(sorting.sortArray);
 
 //        Thread t1 = new Thread(() -> consumer.run());
 //        Thread t2 = new Thread(() -> producer.consumer(array));
