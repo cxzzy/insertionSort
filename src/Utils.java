@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utils {
@@ -23,6 +24,15 @@ public class Utils {
         System.out.println();
     }
 
+    public static void printArrayList(List<Integer> anArray) {
+
+        System.out.print("List: ");
+        for (int i = 0; i < anArray.size(); i++) {
+            System.out.print(anArray.get(i) + " ");
+        }
+
+        System.out.println();
+    }
 
     public static int[] fillArray(int amount) {
         int[] result = new int[amount];

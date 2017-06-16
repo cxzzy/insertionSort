@@ -1,11 +1,15 @@
-import sorting.InsertionSortV2;
+import sorting.Consumer;
+import sorting.Producer;
+import sorting.Sorting;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
         Sort sort = new Sort();
-        InsertionSortV2 insertionSortV2 = new InsertionSortV2();
         EventProfiler profiler = new EventProfiler(true);
 
         //InsertionSort with 1 thread
@@ -13,18 +17,22 @@ public class Main {
         int array[] = Utils.fillArray(100);
         Utils.shuffleArray(array);
 
-        Thread serialThread = new Thread(() -> sort.singleThread(array));
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer(array);
+        Sorting sorting = new Sorting();
 
-        //Start timer
-        profiler.start();
-
-        serialThread.start();
-
-        serialThread.join();
-
-        Utils.printArray(array);
-
-        profiler.log("Result with 1 Thread");
+//        Thread serialThread = new Thread(() -> sort.singleThread(array));
+//
+//        //Start timer
+//        profiler.start();
+//
+//        serialThread.start();
+//
+//        serialThread.join();
+//
+//        Utils.printArray(array);
+//
+//        profiler.log("Result with 1 Thread");
 
         //InsertionSort with 2 threads
 //
@@ -43,23 +51,33 @@ public class Main {
 
         //InsertionSort with multiple threads
 
-        Utils.shuffleArray(array);
+//        Utils.shuffleArray(array);
+//
+//        Utils.printArray(array);
 
-        Utils.printArray(array);
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
-        Thread t1 = new Thread(() -> insertionSortV2.producer(array));
-        Thread t2 = new Thread(insertionSortV2::consumer);
+        executorService.submit(consumer);
 
-        //Start timer
-        profiler.start();
 
-        t1.start();
-        t2.start();
 
-        t1.join();
-        t2.join();
+        executorService.shutdown();
 
-        Utils.printArray(array);
+        System.out.println(sorting.getSortArray());
+
+        Utils.printArrayList(sorting.getSortArray());
+
+//        Thread t1 = new Thread(() -> consumer.run());
+//        Thread t2 = new Thread(() -> producer.consumer(array));
+//
+//        //Start timer
+//        profiler.start();
+//
+//        t1.start();
+//        t2.start();
+//
+//        t1.join();
+//        t2.join();
 
         profiler.log("Result with producer consumer");
     }

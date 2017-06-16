@@ -67,36 +67,4 @@ class Sort {
 
         return arr;
     }
-
-//    int[] insertionSortV2(int[] arr) {
-//
-//        int [] keys = new int[0];
-//        int [] finalArray = new int[0];
-//
-//        Thread t1 = new Thread(() -> {
-//
-//            int j;
-//
-//            keys.length = 0;
-//
-//            for (j = 1; j < arr.length; j++) {
-//                keys.add(0, arr[j]);
-//            }
-//
-//        });
-//
-//        Thread t2 = new Thread(() -> {
-//
-//            int i;
-//
-//            for (i = j - 1; (i >= 0) && (finalArray[i] < keys.get(0)); i--) {
-//                arr[i + 1] = arr[i];
-//            }
-//            finalArray[i + 1] = keys.get(0);
-//
-//        });
-//
-//
-//        return finalArray;
-//    }
 }
