@@ -1,6 +1,8 @@
-class Sort {
+package Helpers;
 
-    int[] singleThread(int[] arr) {
+public class Sort {
+
+    public static int[] singleThread(int[] arr) {
         int j;
         int key;
         int i;
