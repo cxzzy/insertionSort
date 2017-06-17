@@ -3,12 +3,9 @@ package Helpers;
 public class Sort {
 
     public static int[] singleThread(int[] arr) {
-        int j;
-        int key;
-        int i;
+        int j, key, i;
 
         for (j = 1; j < arr.length; j++) {
-
             key = arr[j];
 
             for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
@@ -17,44 +14,36 @@ public class Sort {
 
             arr[i + 1] = key;
         }
+
+        return arr;
+    }
+
+    public static int[] sorRightToLeft(int[] arr) {
+        int k, key2, l;
+
+        for (k = arr.length-1; k >= 0; k--) {
+            key2 = arr[k];
+
+            // Comparision, here something goes wrong
+            for (l = k; (l < 0) && (arr[l] >= key2); l++) {
+                arr[l + 1] = arr[l];
+            }
+
+            arr[l] = key2;
+        }
+
         return arr;
     }
 
     //Add synchronized to make sure that the array will be sorted nicely
-    int[] insertionSort2Threaded(int[] arr) {
+    public static int[] insertionSort2Threaded(int[] arr) {
 
         Thread t1 = new Thread(() -> {
-
-            int j;
-            int key;
-            int i;
-
-            for (j = 1; j < arr.length; j++) {
-                key = arr[j];
-
-                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
-                    arr[i + 1] = arr[i];
-                }
-
-                arr[i + 1] = key;
-            }
+            //singleThread(arr);
         });
 
         Thread t2 = new Thread(() -> {
-
-            int k;
-            int key2;
-            int l;
-
-            for (k = arr.length - 1; k > 0; k--) {
-                key2 = arr[k];
-
-                for (l = k - 1; (l < 0) && (arr[l] >= key2); l++) {
-                    arr[l + 1] = arr[l];
-                }
-
-                arr[l + 1] = key2;
-            }
+            sorRightToLeft(arr);
         });
 
         t1.start();
@@ -97,7 +86,6 @@ public class Sort {
 //            finalArray[i + 1] = keys.get(0);
 //
 //        });
-//
 //
 //        return finalArray;
 //    }

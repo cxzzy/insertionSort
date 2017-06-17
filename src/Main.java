@@ -1,51 +1,51 @@
+import Helpers.EventProfiler;
+import Helpers.Sort;
+import Helpers.Utils;
+import sorting.FourThreads;
 import sorting.InsertionSortV2;
 
 public class Main {
 
+    private static EventProfiler profiler = new EventProfiler(true);
+
     public static void main(String[] args) throws InterruptedException {
-
-        Sort sort = new Sort();
-        InsertionSortV2 insertionSortV2 = new InsertionSortV2();
-        EventProfiler profiler = new EventProfiler(true);
-
-        //InsertionSort with 1 thread
 
         int array[] = Utils.fillArray(100);
         Utils.shuffleArray(array);
 
-        Thread serialThread = new Thread(() -> sort.singleThread(array));
+        System.out.println("Before sort: ");
+        Utils.printArray(array);
+
+        //singleThread(array);
+        twoThreads(array);
+        //fourThreads(array);
+
+        System.out.println("After sort: ");
+        Utils.printArray(array);
+    }
+
+    //InsertionSort with 1 thread
+    public static void singleThread(int[] array) throws InterruptedException {
+
+        Thread serialThread = new Thread(() -> Sort.singleThread(array));
 
         //Start timer
         profiler.start();
 
         serialThread.start();
-
         serialThread.join();
 
-        Utils.printArray(array);
-
         profiler.log("Result with 1 Thread");
+    }
 
-        //InsertionSort with 2 threads
-//
-//        Utils.shuffleArray(array);
-//
-//        Thread parallelThread = new Thread(() -> sort.insertionSort2Threaded(array));
-//
-//        //Start timer
-//        profiler.start();
-//
-//        parallelThread.start();
-//
-//        parallelThread.join();
-//
-//        profiler.log("Result with 2 Threads");
+    /*
+        InsertionSort with multiple threads
+    */
+    public static void consumerProducer(int[] array) throws InterruptedException {
 
-        //InsertionSort with multiple threads
+        InsertionSortV2 insertionSortV2 = new InsertionSortV2();
 
         Utils.shuffleArray(array);
-
-        Utils.printArray(array);
 
         Thread t1 = new Thread(() -> insertionSortV2.producer(array));
         Thread t2 = new Thread(insertionSortV2::consumer);
@@ -59,8 +59,32 @@ public class Main {
         t1.join();
         t2.join();
 
-        Utils.printArray(array);
-
         profiler.log("Result with producer consumer");
+    }
+
+    /*
+        InsertionSort with 2 threads
+    */
+    public static void twoThreads(int[] array) throws InterruptedException {
+
+        Thread parallelThread = new Thread(() -> Sort.insertionSort2Threaded(array));
+
+        //Start timer
+        profiler.start();
+
+        parallelThread.start();
+        parallelThread.join();
+
+        profiler.log("Result with 2 Threads");
+    }
+
+    /*
+        Four threaded solution
+    */
+    public static void fourThreads(int[] array) {
+        FourThreads fourThreads = new FourThreads();
+
+        fourThreads.createBuckets(array);
+        fourThreads.placeInBucket(array);
     }
 }

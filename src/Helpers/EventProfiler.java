@@ -1,3 +1,5 @@
+package Helpers;
+
 public class EventProfiler {
 
     private long previousTimeStamp = -1;

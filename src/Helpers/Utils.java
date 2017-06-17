@@ -1,3 +1,5 @@
+package Helpers;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utils {

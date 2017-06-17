@@ -8,7 +8,6 @@ public class InsertionSortV2 {
     private int getKey() {
         return key;
     }
-
     private void setKey(int key) {
         this.key = key;
     }
