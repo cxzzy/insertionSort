@@ -1,4 +1,4 @@
-package Helpers;
+package helpers;
 
 public class Sort {
 
@@ -18,18 +18,19 @@ public class Sort {
         return arr;
     }
 
-    public static int[] sorRightToLeft(int[] arr) {
-        int k, key2, l;
+    private static int[] sortRightToLeft(int[] arr) {
+        int j, key, i;
 
-        for (k = arr.length-1; k >= 0; k--) {
-            key2 = arr[k];
+        //works
+        for (j = arr.length - 1; j > 0; j--) {
+            key = arr[j];
 
-            // Comparision, here something goes wrong
-            for (l = k; (l < 0) && (arr[l] >= key2); l++) {
-                arr[l + 1] = arr[l];
+            //does not work
+            for (i = j - 1; (i >= 0) && (arr[i] < key); i--){
+                arr[i + 1] = arr[i];
             }
 
-            arr[l] = key2;
+            arr[i + 1] = key;
         }
 
         return arr;
@@ -39,18 +40,18 @@ public class Sort {
     public static int[] insertionSort2Threaded(int[] arr) {
 
         Thread t1 = new Thread(() -> {
-            //singleThread(arr);
+            singleThread(arr);
         });
 
         Thread t2 = new Thread(() -> {
-            sorRightToLeft(arr);
+            sortRightToLeft(arr);
         });
 
-        t1.start();
+//        t1.start();
         t2.start();
 
         try {
-            t1.join();
+//            t1.join();
             t2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

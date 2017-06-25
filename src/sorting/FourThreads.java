@@ -1,12 +1,10 @@
 package sorting;
 
-import Helpers.Sort;
-import Helpers.Utils;
+import helpers.Sort;
+import helpers.Utils;
 
-/**
- * Created by wieskueter.com on 6/15/2017.
- */
 public class FourThreads {
+
     private int[] finalArray;
     private int THREADS = 4;
 
@@ -71,10 +69,8 @@ public class FourThreads {
     public int largestNumber(int[] array) {
         int max = 0;
 
-        for (int counter = 1; counter < array.length; counter++)
-        {
-            if (array[counter] > max)
-            {
+        for (int counter = 1; counter < array.length; counter++) {
+            if (array[counter] > max) {
                 max = array[counter];
             }
         }

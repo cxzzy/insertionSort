@@ -1,6 +1,6 @@
-import Helpers.EventProfiler;
-import Helpers.Sort;
-import Helpers.Utils;
+import helpers.EventProfiler;
+import helpers.Sort;
+import helpers.Utils;
 import sorting.FourThreads;
 import sorting.InsertionSortV2;
 
