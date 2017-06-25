@@ -23,7 +23,8 @@ public class Main {
 
         twoThreads(array);
 
-        //fourThreads(array);
+        //singleThread(array);
+        fourThreads(array);
 
         System.out.println("After sort: ");
         Utils.printArray(array);
@@ -90,6 +91,10 @@ public class Main {
         FourThreads fourThreads = new FourThreads();
 
         fourThreads.createBuckets(array);
+
+        // Run this for each thread
         fourThreads.placeInBucket(array);
+
+        fourThreads.combine();
     }
 }
