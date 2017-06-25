@@ -10,14 +10,19 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(10);
+        int array[] = Utils.fillArray(1000);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
         Utils.printArray(array);
 
-        //singleThread(array);
-        //twoThreads(array);
+//        singleThread(array);
+
+        //Shuffle array again for sorting with 2 threads
+        Utils.shuffleArray(array);
+
+//        twoThreads(array);
+
         //singleThread(array);
         fourThreads(array);
 
