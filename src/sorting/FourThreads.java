@@ -5,7 +5,6 @@ import helpers.Utils;
 
 public class FourThreads {
 
-    private int[] finalArray;
     private int THREADS = 4;
 
     // Each thread has a bucket with the index 0-3

@@ -16,13 +16,8 @@ public class Main {
         System.out.println("Before sort: ");
         Utils.printArray(array);
 
-//        singleThread(array);
-
-        //Shuffle array again for sorting with 2 threads
-        Utils.shuffleArray(array);
-
-        twoThreads(array);
-
+        //singleThread(array);
+        //twoThreads(array);
         //singleThread(array);
         fourThreads(array);
 
@@ -46,7 +41,7 @@ public class Main {
 
     /*
        InsertionSort with 2 threads
-   */
+    */
     private static void twoThreads(int[] array) throws InterruptedException {
 
         Thread parallelThread = new Thread(() -> Sort.insertionSort2Threaded(array));

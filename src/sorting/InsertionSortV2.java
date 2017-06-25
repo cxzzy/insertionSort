@@ -12,7 +12,7 @@ public class InsertionSortV2 {
         this.key = key;
     }
 
-    //This works
+    // This works
     public void producer(int[] array) {
 
         int j;
