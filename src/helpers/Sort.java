@@ -26,7 +26,7 @@ public class Sort {
             key = arr[j];
 
             //does not work
-            for (i = j - 1; (i >= 0) && (arr[i] < key); i--){
+            for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
                 arr[i + 1] = arr[i];
             }
 
@@ -39,12 +39,34 @@ public class Sort {
     //Add synchronized to make sure that the array will be sorted nicely
     public static int[] insertionSort2Threaded(int[] arr) {
 
-        Thread t1 = new Thread(() -> {
-            singleThread(arr);
-        });
+//        Thread t1 = new Thread(() -> {
+//            int j, key, i;
+//
+//            for (j = 1; j < arr.length; j++) {
+//                key = arr[j];
+//
+//                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
+//                    arr[i + 1] = arr[i];
+//                }
+//
+//                arr[i + 1] = key;
+//            }
+//        });
 
         Thread t2 = new Thread(() -> {
-            sortRightToLeft(arr);
+            int j, key, i;
+
+            //works
+            for (j = arr.length; j > 0; j--) {
+                key = arr[j];
+
+                //does not work
+                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
+                    arr[i + 1] = arr[i];
+                }
+
+                arr[i + 1] = key;
+            }
         });
 
 //        t1.start();
@@ -56,6 +78,8 @@ public class Sort {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
 
         return arr;
     }

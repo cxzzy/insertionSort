@@ -10,14 +10,19 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(100);
+        int array[] = Utils.fillArray(10);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
         Utils.printArray(array);
 
-        //singleThread(array);
+//        singleThread(array);
+
+        //Shuffle array again for sorting with 2 threads
+        Utils.shuffleArray(array);
+
         twoThreads(array);
+
         //fourThreads(array);
 
         System.out.println("After sort: ");
@@ -25,7 +30,7 @@ public class Main {
     }
 
     //InsertionSort with 1 thread
-    public static void singleThread(int[] array) throws InterruptedException {
+    private static void singleThread(int[] array) throws InterruptedException {
 
         Thread serialThread = new Thread(() -> Sort.singleThread(array));
 
@@ -36,6 +41,22 @@ public class Main {
         serialThread.join();
 
         profiler.log("Result with 1 Thread");
+    }
+
+    /*
+       InsertionSort with 2 threads
+   */
+    private static void twoThreads(int[] array) throws InterruptedException {
+
+        Thread parallelThread = new Thread(() -> Sort.insertionSort2Threaded(array));
+
+        //Start timer
+        profiler.start();
+
+        parallelThread.start();
+        parallelThread.join();
+
+        profiler.log("Result with 2 Threads");
     }
 
     /*
@@ -60,22 +81,6 @@ public class Main {
         t2.join();
 
         profiler.log("Result with producer consumer");
-    }
-
-    /*
-        InsertionSort with 2 threads
-    */
-    public static void twoThreads(int[] array) throws InterruptedException {
-
-        Thread parallelThread = new Thread(() -> Sort.insertionSort2Threaded(array));
-
-        //Start timer
-        profiler.start();
-
-        parallelThread.start();
-        parallelThread.join();
-
-        profiler.log("Result with 2 Threads");
     }
 
     /*
