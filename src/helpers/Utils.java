@@ -18,7 +18,7 @@ public class Utils {
     }
 
     public static void printArray(int[] anArray) {
-        System.out.print("Array: ");
+//        System.out.print("Array: ");
         for (int i = 0; i < anArray.length; i++) {
             System.out.print(anArray[i] + " ");
         }

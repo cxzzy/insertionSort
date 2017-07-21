@@ -10,24 +10,24 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(1000);
+        int array[] = Utils.fillArray(1000000);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
-        Utils.printArray(array);
+//        Utils.printArray(array);
 
 //        singleThread(array);
 
         //Shuffle array again for sorting with 2 threads
         Utils.shuffleArray(array);
 
-//        twoThreads(array);
+        twoThreads(array);
 
         //singleThread(array);
-        fourThreads(array);
+//        fourThreads(array);
 
         System.out.println("After sort: ");
-        Utils.printArray(array);
+//        Utils.printArray(array);
     }
 
     //InsertionSort with 1 thread

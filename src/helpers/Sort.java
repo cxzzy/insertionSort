@@ -18,49 +18,29 @@ public class Sort {
         return arr;
     }
 
-    private static int[] sortRightToLeft(int[] arr) {
-        int j, key, i;
+    public static void sortRightToLeft(int[] a) {
+        int t;
 
-        //works
-        for (j = arr.length - 1; j > 0; j--) {
-            key = arr[j];
+        for (int i = a.length - 1; i > 0; i--) {
 
-            //does not work
-            for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
-                arr[i + 1] = arr[i];
+            for (int j = i; j < a.length && a[j - 1] <= a[j]; j++) {
+
+                t = a[j];
+                a[j] = a[j - 1];
+                a[j - 1] = t;
             }
-
-            arr[i + 1] = key;
         }
-
-        return arr;
     }
 
     //Add synchronized to make sure that the array will be sorted nicely
-    public static int[] insertionSort2Threaded(int[] arr) {
+    public synchronized static int[] insertionSort2Threaded(int[] arr) {
 
-//        Thread t1 = new Thread(() -> {
-//            int j, key, i;
-//
-//            for (j = 1; j < arr.length; j++) {
-//                key = arr[j];
-//
-//                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
-//                    arr[i + 1] = arr[i];
-//                }
-//
-//                arr[i + 1] = key;
-//            }
-//        });
-
-        Thread t2 = new Thread(() -> {
+        Thread t1 = new Thread(() -> {
             int j, key, i;
 
-            //works
-            for (j = arr.length; j > 0; j--) {
+            for (j = 1; j < arr.length; j++) {
                 key = arr[j];
 
-                //does not work
                 for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
                     arr[i + 1] = arr[i];
                 }
@@ -69,16 +49,30 @@ public class Sort {
             }
         });
 
-//        t1.start();
+        Thread t2 = new Thread(() -> {
+            int t, i, j;
+
+            for (i = arr.length - 1; i > 0; i--) {
+
+                for (j = i; j < arr.length && arr[j - 1] <= arr[j]; j++) {
+
+                    t = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = t;
+
+                }
+            }
+        });
+
+        t1.start();
         t2.start();
 
         try {
-//            t1.join();
+            t1.join();
             t2.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
 
         return arr;
