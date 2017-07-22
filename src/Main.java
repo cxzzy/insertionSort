@@ -10,13 +10,12 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(10);
+        int array[] = Utils.fillArray(10000);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
         Utils.printArray(array);
 
-        //singleThread(array);
         //singleThread(array);
         //twoThreads(array);
         fourThreads(array);
@@ -84,9 +83,12 @@ public class Main {
     */
     public static void fourThreads(int[] array) throws InterruptedException {
 
-        FourThreads fourThreads = new FourThreads();
-        Thread t1 = new Thread(() -> fourThreads.FourThreads(array));
+        //Start timer
+        profiler.start();
 
-        t1.start();
+        FourThreads fourThreads = new FourThreads();
+        fourThreads.FourThreads(array);
+
+        profiler.log("Result with four threads");
     }
 }
