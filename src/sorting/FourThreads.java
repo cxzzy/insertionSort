@@ -8,11 +8,20 @@ public class FourThreads {
     private int THREADS = 4;
 
     // Each thread has a bucket with the index 0-3
-    int[][] bucket = new int[4][100];
+    int[][] bucket;
 
     // Min and max values for buckets
-    int minNumber[] = new int[4];
-    int maxNumber[] = new int[4];
+    int minNumber[] = new int[THREADS];
+    int maxNumber[] = new int[THREADS];
+
+    public int[] FourThreads(int[] arr) {
+
+        // Create each bucket
+        this.createBuckets(arr);
+        this.placeInBucket(arr);
+
+        return this.combine();
+    }
 
     /*
         Create arrays in where each thread puts his number
@@ -20,20 +29,21 @@ public class FourThreads {
     */
     public void placeInBucket(int[] array) {
 
+        // Loop through each number and place in bucket
         for (int i = 0; i < array.length; i++) {
-            if (array[i] < maxNumber[0]) {
+            if (array[i] <= maxNumber[0]) {
                 bucket[0][i] = array[i];
                 Sort.singleThread(bucket[0]);
             }
-            if (array[i] < maxNumber[1] && array[i] > minNumber[1]) {
+            if (array[i] <= maxNumber[1] && array[i] >= minNumber[1]) {
                 bucket[1][i] = array[i];
                 Sort.singleThread(bucket[1]);
             }
-            if (array[i] < maxNumber[2] && array[i] > minNumber[2]) {
+            if (array[i] <= maxNumber[2] && array[i] >= minNumber[2]) {
                 bucket[2][i] = array[i];
                 Sort.singleThread(bucket[2]);
             }
-            if (array[i] < maxNumber[3] && array[i] > minNumber[3]) {
+            if (array[i] <= maxNumber[3] && array[i] >= minNumber[3]) {
                 bucket[3][i] = array[i];
                 Sort.singleThread(bucket[3]);
             }
@@ -42,6 +52,9 @@ public class FourThreads {
 
     // @TO-DO dynamically create buckets
     public void createBuckets(int[] array) {
+
+        bucket = new int[THREADS][array.length];
+
         // Create buckets
         int max = largestNumber(array);
         System.out.println("Max: " + max);
@@ -77,14 +90,16 @@ public class FourThreads {
         return max;
     }
 
-    public void combine() {
+    public int[] combine() {
         int[] combinedBucket = combineBuckets(bucket[3], bucket[2], bucket[1], bucket[0]);
 
         System.out.println("Final sorted bucket: ");
         Utils.printArray(combinedBucket);
+
+        return combinedBucket;
     }
 
-    final static public int[] combineBuckets(final int[] ...arrays ) {
+    public int[] combineBuckets(final int[] ...arrays ) {
         int size = 0;
         for ( int[] a: arrays )
             size += a.length;

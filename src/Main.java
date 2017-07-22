@@ -10,24 +10,19 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(1000000);
+        int array[] = Utils.fillArray(10);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
-//        Utils.printArray(array);
-
-//        singleThread(array);
-
-        //Shuffle array again for sorting with 2 threads
-        Utils.shuffleArray(array);
-
-        twoThreads(array);
+        Utils.printArray(array);
 
         //singleThread(array);
-//        fourThreads(array);
+        //singleThread(array);
+        //twoThreads(array);
+        fourThreads(array);
 
         System.out.println("After sort: ");
-//        Utils.printArray(array);
+        Utils.printArray(array);
     }
 
     //InsertionSort with 1 thread
@@ -87,14 +82,11 @@ public class Main {
     /*
         Four threaded solution
     */
-    public static void fourThreads(int[] array) {
+    public static void fourThreads(int[] array) throws InterruptedException {
+
         FourThreads fourThreads = new FourThreads();
+        Thread t1 = new Thread(() -> fourThreads.FourThreads(array));
 
-        fourThreads.createBuckets(array);
-
-        // Run this for each thread
-        fourThreads.placeInBucket(array);
-
-        fourThreads.combine();
+        t1.start();
     }
 }
