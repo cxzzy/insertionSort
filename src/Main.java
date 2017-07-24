@@ -83,11 +83,13 @@ public class Main {
     */
     public static void fourThreads(int[] array) throws InterruptedException {
 
+        FourThreads fourThreads = new FourThreads();
+        Thread fourThreaded = new Thread(() -> fourThreads.FourThreads(array));
+
         //Start timer
         profiler.start();
 
-        FourThreads fourThreads = new FourThreads();
-        fourThreads.FourThreads(array);
+        fourThreaded.start();
 
         profiler.log("Result with four threads");
     }
