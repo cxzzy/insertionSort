@@ -69,29 +69,6 @@ public class FourThreads {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Loop through each number and place in bucket
-        /*for (int i = 0; i < array.length; i++) {
-            if (array[i] <= maxNumber[0]) {
-                bucket[0][i] = array[i];
-                Sort.singleThread(bucket[0]);
-            }
-
-            if (array[i] <= maxNumber[1] && array[i] >= minNumber[1]) {
-                bucket[1][i] = array[i];
-                Sort.singleThread(bucket[1]);
-            }
-
-            if (array[i] <= maxNumber[2] && array[i] >= minNumber[2]) {
-                bucket[2][i] = array[i];
-                Sort.singleThread(bucket[2]);
-            }
-
-            if (array[i] <= maxNumber[3] && array[i] >= minNumber[3]) {
-                bucket[3][i] = array[i];
-                Sort.singleThread(bucket[3]);
-            }
-        }*/
     }
 
     private static void pickBucket(int[] array, int i) {
