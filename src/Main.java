@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(10000);
+        int array[] = Utils.fillArray(10);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");
@@ -22,6 +22,8 @@ public class Main {
 
         System.out.println("After sort: ");
         Utils.printArray(array);
+
+        //19215.494187 ms
     }
 
     //InsertionSort with 1 thread
@@ -84,13 +86,12 @@ public class Main {
     public static void fourThreads(int[] array) throws InterruptedException {
 
         FourThreads fourThreads = new FourThreads();
-        Thread fourThreaded = new Thread(() -> fourThreads.FourThreads(array));
-
+        fourThreads.FourThreads(array);
         //Start timer
-        profiler.start();
+        //profiler.start();
 
-        fourThreaded.start();
+        //fourThreaded.start();
 
-        profiler.log("Result with four threads");
+        //profiler.log("Result with four threads");
     }
 }

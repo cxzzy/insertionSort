@@ -2,6 +2,7 @@ package helpers;
 
 public class Sort {
 
+    // Sort from left to right
     public static int[] singleThread(int[] arr) {
         int j, key, i;
 
@@ -18,16 +19,18 @@ public class Sort {
         return arr;
     }
 
-    public static void sortRightToLeft(int[] a) {
-        int t;
+    // Sort from right to left
+    public static void sortRightToLeft(int[] arr) {
+        int t, i, j;
 
-        for (int i = a.length - 1; i > 0; i--) {
+        for (i = arr.length - 1; i > 0; i--) {
 
-            for (int j = i; j < a.length && a[j - 1] <= a[j]; j++) {
+            for (j = i; j < arr.length && arr[j - 1] <= arr[j]; j++) {
 
-                t = a[j];
-                a[j] = a[j - 1];
-                a[j - 1] = t;
+                t = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = t;
+
             }
         }
     }
@@ -36,32 +39,11 @@ public class Sort {
     public synchronized static int[] insertionSort2Threaded(int[] arr) {
 
         Thread t1 = new Thread(() -> {
-            int j, key, i;
-
-            for (j = 1; j < arr.length; j++) {
-                key = arr[j];
-
-                for (i = j - 1; (i >= 0) && (arr[i] < key); i--) {
-                    arr[i + 1] = arr[i];
-                }
-
-                arr[i + 1] = key;
-            }
+            singleThread(arr);
         });
 
         Thread t2 = new Thread(() -> {
-            int t, i, j;
-
-            for (i = arr.length - 1; i > 0; i--) {
-
-                for (j = i; j < arr.length && arr[j - 1] <= arr[j]; j++) {
-
-                    t = arr[j];
-                    arr[j] = arr[j - 1];
-                    arr[j - 1] = t;
-
-                }
-            }
+            sortRightToLeft(arr);
         });
 
         t1.start();
@@ -91,7 +73,6 @@ public class Sort {
 //            for (j = 1; j < arr.length; j++) {
 //                keys.add(0, arr[j]);
 //            }
-//
 //        });
 //
 //        Thread t2 = new Thread(() -> {
@@ -102,7 +83,6 @@ public class Sort {
 //                arr[i + 1] = arr[i];
 //            }
 //            finalArray[i + 1] = keys.get(0);
-//
 //        });
 //
 //        return finalArray;
