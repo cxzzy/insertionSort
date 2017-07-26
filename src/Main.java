@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        int array[] = Utils.fillArray(10);
+        int array[] = Utils.fillArray(15000);
         Utils.shuffleArray(array);
 
         System.out.println("Before sort: ");

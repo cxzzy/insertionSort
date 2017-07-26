@@ -11,7 +11,7 @@ public class FourThreads {
 
     private static EventProfiler profiler = new EventProfiler(true);
 
-    private static int THREADS = 4;
+    private static int THREADS = 8;
 
     // Each thread has a bucket with the index 0-3
     private static int[][] bucket;
@@ -33,8 +33,8 @@ public class FourThreads {
             int finalI = i;
             threads[i] = new Thread(() -> {
                 // some code to run in parallel
-                for(int X = minNumber[finalI]; X<=maxNumber[finalI]; X++) {
-                    pickBucket(arr, X);
+                for(int x = minNumber[finalI]; x<=maxNumber[finalI]; x++) {
+                    pickBucket(arr, x);
                 }
             });
             threads[i].start();
@@ -57,9 +57,8 @@ public class FourThreads {
         int max = largestNumber(array);
         int per_bucket = array.length/ THREADS;
 
-        /*System.out.println("Max: " + max);
-        System.out.println("Create buckets for:" + max / THREADS);
-        System.out.println("Per bucket: "+ per_bucket);*/
+        System.out.println("Max: " + max);
+        System.out.println("Per bucket: "+ per_bucket);
 
         for (int i = 1; i <= THREADS; i++) {
             int from_bucket = i == 1 ? 0 : (i - 1) * per_bucket;
