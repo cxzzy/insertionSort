@@ -22,8 +22,6 @@ public class Main {
 
         System.out.println("After sort: ");
         Utils.printArray(array);
-
-        //19215.494187 ms
     }
 
     //InsertionSort with 1 thread

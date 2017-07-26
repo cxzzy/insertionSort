@@ -11,21 +11,16 @@ public class FourThreads {
 
     private static EventProfiler profiler = new EventProfiler(true);
 
-    private static int THREADS = 8;
-
-    // Each thread has a bucket with the index 0-3
-    private static int[][] bucket;
-
-    // Min and max values for buckets
-    private static int minNumber[] = new int[THREADS];
-    private static int maxNumber[] = new int[THREADS];
+    private static int THREADS = 4; // Number of threads
+    private static int bucket[][]; // Each thread has a bucket with the index 0-3
+    private static int minNumber[] = new int[THREADS]; // Min values for buckets
+    private static int maxNumber[] = new int[THREADS]; // Max values for buckets
 
     public static int[] FourThreads(int[] arr) throws InterruptedException {
 
         profiler.start();
 
-        // Create each bucket
-        createBuckets(arr);
+        createBuckets(arr); // Create each bucket
 
         // Sort for each thread
         Thread[] threads = new Thread[THREADS];
@@ -36,7 +31,11 @@ public class FourThreads {
                 for(int x = minNumber[finalI]; x<=maxNumber[finalI]; x++) {
                     pickBucket(arr, x);
                 }
+                Sort.singleThread(bucket[finalI]);
             });
+        }
+
+        for (int i = 0; i < threads.length; i++) {
             threads[i].start();
             threads[i].join();
         }
@@ -44,7 +43,7 @@ public class FourThreads {
         System.out.println("Final sorted bucket with "+ THREADS +" threads:");
         Utils.printArray( combine() );
 
-        profiler.log("Result with four threads");
+        profiler.log("Result with "+ THREADS +" threads");
 
         return combine();
     }
@@ -57,8 +56,7 @@ public class FourThreads {
         int max = largestNumber(array);
         int per_bucket = array.length/ THREADS;
 
-        System.out.println("Max: " + max);
-        System.out.println("Per bucket: "+ per_bucket);
+        System.out.println("Per bucket: "+ per_bucket +" max: "+ max);
 
         for (int i = 1; i <= THREADS; i++) {
             int from_bucket = i == 1 ? 0 : (i - 1) * per_bucket;
@@ -78,7 +76,6 @@ public class FourThreads {
         for(int t = 0; t < THREADS; t++) {
             if (array[i] <= maxNumber[t] && array[i] >= minNumber[t]) {
                 bucket[t][i] = array[i];
-                Sort.singleThread(bucket[t]);
             }
         }
     }
